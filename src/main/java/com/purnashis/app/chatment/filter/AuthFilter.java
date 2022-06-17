@@ -15,37 +15,20 @@ import static org.apache.logging.log4j.util.Strings.isEmpty;
 public class AuthFilter implements Filter {
     @Autowired
     private FactRepo factRepo;
-//
-//
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        System.out.println("here in dofilter");
-//        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-//        if(isEmpty(header) || !header.startsWith("Bearer") ){
-//            filterChain.doFilter(request,response);
-//            return;
-//        }
-//        final String token = header.split(" ")[1].trim();
-//        if (token != "asdfghjkl"){
-//            filterChain.doFilter(request,response);
-//            return;
-//        }
-//        //SecurityContextHolder.getContext().setAuthentication(authentication);
-//        filterChain.doFilter(request,response);
-//    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
         final String header = httpRequest.getHeader(HttpHeaders.AUTHORIZATION);
 
         if(isEmpty(header) || !header.startsWith("Bearer") || header==null){
             return;
         }
         final String token = header.split(" ")[1].trim();
-        System.out.println(token);
-        if (!token.equals("asdfghjkl")){
-            return;
+        if (!token.equals("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9")){
+            httpResponse.sendError(401, "Invalid Authorization code/ Unauthorized");
+            //return;
         }
         filterChain.doFilter(request,response);
     }

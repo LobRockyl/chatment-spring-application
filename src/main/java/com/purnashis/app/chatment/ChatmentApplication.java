@@ -18,7 +18,6 @@ public class ChatmentApplication {
 		final FilterRegistrationBean<AuthFilter> fBean = new FilterRegistrationBean<>();
 		fBean.setFilter(new AuthFilter());
 		fBean.addUrlPatterns("/getfact");
-		fBean.addUrlPatterns("/getfacts");
 		return fBean;
 	}
 }
